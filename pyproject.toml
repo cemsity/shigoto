@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "kanban"
+version = "0.1.0"
+description = ""
+authors = ["Stephen Hilson <cemsity@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12.0"
+fastapi = "^0.104.0"
+sqlalchemy = "^2.0.22"
+uvicorn = "^0.23.2"
+
+
+[tool.poetry.group.test.dependencies]
+pytest = "^7.4.2"
+
+
+[tool.poetry.group.dev.dependencies]
+alembic = "^1.12.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
