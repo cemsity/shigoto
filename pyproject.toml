@@ -9,16 +9,28 @@ readme = "README.md"
 python = "^3.12.0"
 fastapi = "^0.104.0"
 sqlalchemy = "^2.0.22"
-uvicorn = "^0.23.2"
-
+pydantic = {version = "2.4.2", extras = ["email"]}
+uvicorn = {version = "^0.23.2", extras = ["standard"]}
+fastapi-users = {version = "^12.1.2", extras = ["sqlalchemy","oauth"]}
+taskiq-fastapi = "^0.3.1"
+sqladmin = "^0.15.2"
+asyncpg = "^0.28.0"
+redis = "5.0.1"
+alembic = "^1.12.0"
 
 [tool.poetry.group.test.dependencies]
 pytest = "^7.4.2"
 
 
 [tool.poetry.group.dev.dependencies]
-alembic = "^1.12.0"
+black = "*"
+isort = "*"
+ruff = "*"
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poe.tasks]
+test = "pytest --cov:kanban tests/"
+run_dev = "uvicorn kanban.main:app --reload"
