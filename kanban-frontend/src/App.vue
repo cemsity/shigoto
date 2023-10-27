@@ -1,85 +1,77 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+import { ref, reactive } from "vue";
+import draggable from "vuedraggable";
+
+
+type Story = {
+  id: number;
+  title: string;
+};
+
+const toDo = reactive([]);
+const done = reactive([]);
+const newToDo = ref("");
+const newDone = ref("");
+const nextId = ref(5);
+
+const addItem = (list: Array<Story>, newItem: string) => {
+  const item: Story = { id: nextId.value, title: newItem };
+  list.push(item);
+  nextId.value++;
+  return "";
+};
+
+const deleteItem = (list: Array<Story>, index: number) => {
+  list.splice(index, 1);
+};
+
+const editItem = (list: Array<Story>, index: number) => {
+  list[index].title = "Changed";
+};
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
+  <div class="container mx-auto rounded-lg bg-slate-400 h-screen flex flex-nowrap justify-around">
+    <div id="container_1" class="bg-orange-300 grow m-2 space-y-4 min-h-max">
+      <div class="">
+        <h3 class="text-3xl">Todo</h3>
+        <input @keyup.enter="newToDo = addItem(toDo, newToDo)" v-model="newToDo" type="text"
+          placeholder="Add a new story" />
+        <button @click="newToDo = addItem(toDo, newToDo)">add</button>
+      </div>
+      <div class="bg-orange-100 min-h-full rounded-3xl">
+        <draggable class="list-group" :list="toDo" group="stories" item-key="id">
+          <template #item="{ element, index }">
+            <div class="list-group-item border-2 rounded hover:bg-red-400">
+              <p>{{ element.title }}</p> <button @click="editItem(toDo, index)">edit</button>
+            </div>
+          </template>
+        </draggable>
+      </div>
     </div>
-  </header>
-
-  <RouterView />
+    <div id="container_2" class="bg-blue-300 grow m-2 space-y-4">
+      <div>
+        <h3 class="text-3xl">Done</h3>
+        <input @keyup.enter="newDone = addItem(done, newDone)" v-model="newDone" type="text"
+          placeholder="Add a new story" />
+          <button @click="newDone = addItem(toDo, newDone)">add</button>
+      </div>
+      <div class="bg-blue-100 rounded-3xl min-h-full">
+        <draggable class="list-group space-y-2 h-full bg-red-200" :list="done" group="stories" item-key="id">
+          <template #item="{ element, index }">
+            <div class="list-group-item border-2 rounded hover:bg-red-400 ">
+              <p>{{ element.title }}</p>
+              <button @click="deleteItem(done, index)">delete</button>
+            </div>
+          </template>
+        </draggable>
+      </div>
+    </div>
+  </div>
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
+.dragging {
+  opacity: 0.5;
 }
 </style>
