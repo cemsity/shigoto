@@ -1,10 +1,35 @@
-export type Story = {
-    id: number;
-    title: string;
-  };
+export interface iKanbanStory {
+  id: number
+  title: string
+  body: string
+}
 
-export type KanbanListStruct = {
-    id: number;
-    title: string;
-    stories: Array<Story>;
-};
+export interface iKanbanStage {
+  id: number
+  title: string
+  stories: iKanbanStory[]
+}
+
+export interface iKanbanBoard {
+  id: number
+  title: string
+  owner: string
+  columns: iKanbanStage[]
+}
+
+export interface iKanbanTemplate {
+  id: number
+  name: string
+  body: string
+}
+
+export interface iKanbanBoardState {
+  id: number
+  title: string
+  owner: string
+}
+
+export interface iKanbanStageState {
+  id: number
+  title: string
+}

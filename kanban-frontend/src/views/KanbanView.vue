@@ -1,12 +1,9 @@
 <script setup lang="ts">
-import KanbanBoard from '@/components/board/KanbanBoard.vue';
-
-
+import KanbanBoard from '@/components/board/KanbanBoard.vue'
 </script>
 
 <template>
-    <KanbanBoard />
+  <KanbanBoard />
 </template>
 
-<style>
-</style>
+<style></style>
