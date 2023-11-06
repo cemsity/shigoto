@@ -2,6 +2,7 @@ export interface iKanbanStory {
   id: number
   title: string
   body: string
+  data?: JSON
 }
 
 export interface iKanbanStage {

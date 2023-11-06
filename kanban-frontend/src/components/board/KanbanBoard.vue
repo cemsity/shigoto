@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import KanbanColumn from './KanbanColumn.vue'
-import NewKanbanStage from "@/components/board/ui/NewKanbanStage.vue"
+import NewKanbanStage from '@/components/board/ui/NewKanbanStage.vue'
+import KanbanBoardHeader from "./KanbanBoardHeader.vue"
 import {
   type iKanbanStory,
   type iKanbanStage,
@@ -104,11 +105,8 @@ onMounted(() => {
   boardStore.setFrom(kanbanBoard, [kanbanTemplate])
 })
 
-const newTitle = ref('')
-
-const changeTitle = () => {
-  boardStore.setBoardTitle(newTitle.value)
-  newTitle.value = ''
+const newTitle = (title: string) => {
+  boardStore.setBoardTitle(title)
 }
 
 const newColumnTitle = ref('')
@@ -132,8 +130,10 @@ const deleteStory = (storyId: number, columnIdx: number) => {
 }
 
 const editStoryBody = (storyBody: string, storyId: number, columnIdx: number) => {
+  //   console.log(`Edit Story: ${storyBody},${storyId},${columnIdx}`)
   const story = boardStore.getStory(storyId, columnIdx)
-
+  //   console.log(story)
+  //   console.log(storyBody)
   if (story) {
     story.body = storyBody
     boardStore.setStory(story, columnIdx)
@@ -141,16 +141,7 @@ const editStoryBody = (storyBody: string, storyId: number, columnIdx: number) =>
 }
 </script>
 <template>
-  <h1 class="text-5xl">{{ board.title }}</h1>
-  <input v-model="newTitle" @keyup.enter="changeTitle" type="text" placeholder="Change title" />
-  <button @click="changeTitle">Change title</button>
-  <input
-    @keyup.enter="newColumnTitle = newColumn(newColumnTitle)"
-    v-model="newColumnTitle"
-    type="text"
-    placeholder="Add a new list"
-  />
-  <button @click="newColumnTitle = newColumn(newColumnTitle)">Add new list</button>
+  <KanbanBoardHeader :title="board.title" @new-title="newTitle"/>
   <div class="flex flex-row space-x-4">
     <KanbanColumn
       v-for="[index, item] in stages.entries()"
@@ -162,7 +153,7 @@ const editStoryBody = (storyBody: string, storyId: number, columnIdx: number) =>
       @delete-story="deleteStory"
       @edit-story-body="editStoryBody"
     />
-    <NewKanbanStage/>
+    <NewKanbanStage @new-stage="newColumn('New Stage')" />
   </div>
 </template>
 <style scoped></style>

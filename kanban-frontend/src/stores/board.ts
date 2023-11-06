@@ -59,31 +59,33 @@ export const useBoardStore = defineStore('board', () => {
   function setBoardTitle(newTitle: string) {
     board.value.title = newTitle
   }
-  function addColumn(title: string) {
+  function addStage(title: string) {
     const id = columns.value.length + 1
     columns.value.push({ id: id, title })
     stories.value.set(id, [])
   }
-  function removeColumn(idx: number) {
+  function removeStage(idx: number) {
     columns.value.splice(idx, 1)
     stories.value.delete(idx)
   }
 
-  function addStory(newStory: string, columnIdx: number) {
+  function addStory(newStory: string, columnID: number) {
     const id = numberOfStories.value + 1
     const story: iKanbanStory = { id, title: newStory, body: templateStore.templates[0].body }
-    stories.value.get(columnIdx)?.push(story)
+    stories.value.get(columnID)?.push(story)
     numberOfStories.value++
   }
-  function removeStory(storyId: number, columnIdx: number) {
-    const indexToRemove = stories.value.get(columnIdx)?.findIndex((story) => storyId === story.id)
-    if (indexToRemove) {
-      stories.value.get(columnIdx)?.splice(indexToRemove, 1)
+  function removeStory(storyId: number, columnID: number) {
+    const indexToRemove = stories.value.get(columnID)?.findIndex((story) => storyId === story.id)
+    console.log(indexToRemove)
+    if (indexToRemove !== undefined) {
+      console.log(columnID)
+      stories.value.get(columnID)?.splice(indexToRemove, 1)
     }
   }
   // TODO make this into a Optional
-  function getStory(storyId: number, columnIdx: number) {
-    return stories.value.get(columnIdx)?.find((story) => story.id === storyId)
+  function getStory(storyId: number, columnId: number) {
+    return stories.value.get(columnId)?.find((story) => story.id === storyId)
   }
   function setStory(story: iKanbanStory, columnIdx: number) {
     stories.value.get(columnIdx)?.forEach((item, idx, arr) => {
@@ -105,8 +107,8 @@ export const useBoardStore = defineStore('board', () => {
     selectedStory,
     setFrom,
     setBoardTitle,
-    addColumn,
-    removeColumn,
+    addColumn: addStage,
+    removeColumn: removeStage,
     addStory,
     removeStory,
     setStory,

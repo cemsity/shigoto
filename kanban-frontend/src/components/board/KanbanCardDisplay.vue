@@ -29,7 +29,7 @@ function editBody() {
 
 const doneEdit = () => {
   editing.value = !editing.value
-  body.value = editedBody.value
+  //   body.value = editedBody.value
   emit('edit-story-body', body.value, props.story.id)
   bodyCache = ''
   editedBody.value = bodyCache
@@ -71,6 +71,7 @@ const close = () => {
       <div class="flex-1">
         <button @click="close">Close</button>
         <div class="p-2 prose" v-html="renderedBody"></div>
+        <!-- <div class="p-2"></div> -->
       </div>
     </div>
   </div>

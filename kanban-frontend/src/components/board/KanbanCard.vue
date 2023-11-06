@@ -4,7 +4,7 @@ import type { iKanbanStory } from '../../types/KanbanTypes'
 import KanbanCardDisplay from './KanbanCardDisplay.vue'
 // import { useStoryStore } from "@/stores/story";
 const props = defineProps<{
-  element: iKanbanStory
+  story: iKanbanStory
   index: number
 }>()
 const emit = defineEmits<{
@@ -33,12 +33,12 @@ const editStoryBody = (storyBody: string, storyId: number) => {
     class="list-group-item border-2 p-1 rounded bg-orange-50 hover:bg-red-400"
     @dblclick="toggleCard"
   >
-    <p>{{ props.element.title }}</p>
+    <p>{{ props.story.title }}</p>
     <button @click="toggleCard">edit</button>
-    <button @click="deleteStory(props.element.id)">delete</button>
+    <button @click="deleteStory(props.story.id)">delete</button>
     <Teleport v-if="show" to="body">
       <KanbanCardDisplay
-        :story="props.element"
+        :story="props.story"
         @close="toggleCard"
         @edit-story-body="editStoryBody"
       />

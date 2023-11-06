@@ -4,6 +4,7 @@ import draggable from 'vuedraggable'
 import type { iKanbanStory, iKanbanStage } from '../../types/KanbanTypes'
 import KanbanCard from './KanbanCard.vue'
 import KanbanListHeader from './KanbanListHeader.vue'
+import NewKanbanStoryVue from './ui/NewKanbanStory.vue'
 const props = defineProps<{
   kanbanList: iKanbanStage
   index: number
@@ -24,15 +25,15 @@ const deleteList = () => {
 }
 
 const newStory = (storyTitle: string) => {
-  emit('new-story', storyTitle, props.index)
+  emit('new-story', storyTitle, props.kanbanList.id)
 }
 
 const deleteStory = (storyId: number) => {
-  emit('delete-story', storyId, props.index)
+  emit('delete-story', storyId, props.kanbanList.id)
 }
 
 const editStoryBody = (storyBody: string, storyId: number) => {
-  emit('edit-story-body', storyBody, storyId, props.index)
+  emit('edit-story-body', storyBody, storyId, props.kanbanList.id)
 }
 </script>
 
@@ -55,13 +56,14 @@ const editStoryBody = (storyBody: string, storyId: number) => {
       >
         <template #item="{ element, index }">
           <KanbanCard
-            :element="element"
+            :story="element"
             :index="index"
             @delete-story="deleteStory"
             @edit-story-body="editStoryBody"
           />
         </template>
       </draggable>
+      <NewKanbanStoryVue @new-story="newStory"/>
     </div>
   </div>
 </template>
